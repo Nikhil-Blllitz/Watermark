@@ -20,7 +20,7 @@ async function getGeneratedText(prompt) {
 function insertWatermark(text) {
   const watermark = '\u200D'; // Zero-width joiner shown as "&zwj" in html 
   const words = text.split(' ');
-  const interval = Math.floor(words.length / 10); // Watermark every 10% of the text length
+  const interval = Math.floor(words.length / 50); // Watermark every 50% of the text length
 
   for (let i = interval; i < words.length; i += interval + 1) {
       words[i] += watermark; // Appends the invisible watermark
