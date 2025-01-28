@@ -5,14 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <title>AI Text Watermark</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px;
+      cursor: pointer;
+    }
+    #output, #detection-output {
+      margin-top: 20px;
+      white-space: pre-wrap;
+      background: #f9f9f9;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .highlight {
+      background-color: yellow;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <h1>INVISIBLE WATERMARK</h1>
 
-  <!-- Input for search box -->
+  <!-- Input for watermark generation -->
   <div id="b">
     <label class="search-label">
-      <input type="text" id="search-box" name="text" class="input" required="" placeholder="Type here..."> <!-- Add the id -->
+      <input type="text" id="search-box" name="text" class="input" required="" placeholder="Type here...">
       <kbd class="slash-icon">/</kbd>
       <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 512 512" xml:space="preserve">
         <g>
@@ -23,15 +47,49 @@
     <button id="search-btn">Generate</button>
   </div>
 
-  <!-- Display the watermarked text -->
+  <!-- Display the generated watermarked text -->
   <div>
     <h2>GENERATED TEXT</h2>
-    
     <div id="para">
       <p id="output"></p> 
-    </div><!-- The generated text with watermark will be displayed here -->
+    </div>
   </div>
 
-  <script src="script.js"></script> <!-- Linking the JavaScript file -->
+  <!-- Input for watermark detection -->
+  <div>
+    <h2>DETECT WATERMARK</h2>
+    <textarea id="input-text" rows="10" style="width: 100%;" placeholder="Paste watermarked text here..."></textarea>
+    <button id="detect-btn">Detect Watermark</button>
+    <div id="detection-output"></div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Function to detect if a watermark is present
+    function detectWatermarkPresence(text) {
+      const watermark = '\u200D'; // Zero-width joiner
+      return text.includes(watermark); // Returns true if watermark is found
+    }
+  
+    // Event listener for the "Detect" button
+    document.getElementById('detect-btn').addEventListener('click', () => {
+      const inputText = document.getElementById('input-text').value; // Get user input from the textarea
+      const outputDiv = document.getElementById('detection-output'); // Output container
+  
+      if (inputText.trim() === '') {
+        outputDiv.innerHTML = '<p>Please enter some text to analyze.</p>';
+        return;
+      }
+  
+      const watermarkPresent = detectWatermarkPresence(inputText); // Check for watermark presence
+  
+      // Display the result
+      if (watermarkPresent) {
+        outputDiv.innerHTML = '<p><strong>Watermark Detected:</strong> Yes</p>';
+      } else {
+        outputDiv.innerHTML = '<p><strong>Watermark Detected:</strong> No</p>';
+      }
+    });
+  </script>  
 </body>
 </html>
